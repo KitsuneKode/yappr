@@ -1,5 +1,5 @@
 {
-  "name": "chat-turbo-repo",
+  "name": "yappr",
   "private": true,
   "scripts": {
     "build": "turbo run build",
