@@ -1,10 +1,17 @@
 import { JWT_SECRET } from '@repo/backend-common/config';
 import { prisma } from '@repo/db';
 import bcrypt from 'bcrypt';
-import { Router, Request, Response, NextFunction } from 'express';
+import {
+  Router,
+  type Request,
+  type Response,
+  type NextFunction,
+} from 'express';
 import jwt from 'jsonwebtoken';
+import { getValidationErrors, validate } from '@repo/common';
+import { signInObject } from '@repo/common/types';
 
-const router: Router = Router();
+const router = Router();
 
 router.post(
   '/signin',
@@ -14,6 +21,16 @@ router.post(
 
     if (!email || !password) {
       res.status(400).send('Email and password are required');
+      return;
+    }
+
+    const result = validate(signInObject, req.body);
+
+    if (!result.success) {
+      res.status(411).json({
+        message: 'Errors in Input',
+        errors: getValidationErrors(result),
+      });
       return;
     }
 
@@ -88,7 +105,7 @@ router.post(
         return;
       }
 
-      res.status(201).json({ message: 'Signed up successfully' });
+      res.status(200).json({ message: 'Signed up successfully' });
     } catch (err) {
       next(err);
     }

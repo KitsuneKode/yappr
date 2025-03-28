@@ -2,13 +2,14 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "./src/index.ts",
   "private": true,
   "exports": {
     ".": "./src/index.ts"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "pnpm prisma generate"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +20,9 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.13.10",
-    "typescript": "^5.8.2"
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
   }
 }

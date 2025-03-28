@@ -1,4 +1,5 @@
 import userRoutes from './routes/user-routes';
+import chatRoutes from './routes/chat-routes';
 import express, {
   type Application,
   type NextFunction,
@@ -6,14 +7,16 @@ import express, {
   type Response,
 } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { auth } from './middleware/auth-middleware';
 
 const app: Application = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors());
 
-const routes = [userRoutes];
+const routes = [userRoutes, chatRoutes];
 
 routes.forEach((route) => {
   app.use('/api/v1/', route);

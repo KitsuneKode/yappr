@@ -25,11 +25,23 @@ if (cluster.isPrimary) {
     }
   });
 
-  process.on('SIGTERM', () => {
-    console.log('Received SIGTERM signal. Shutting down gracefully...');
+  const gracefulShutdown = () => {
+    console.log(
+      `Worker ${process.pid} received shutdown signal. Shutting down gracefully...`
+    );
     server.close(() => {
-      console.log('Server closed.');
+      console.log(`Worker ${process.pid} closed.`);
       process.exit(0);
     });
-  });
+
+    setTimeout(() => {
+      console.error(
+        `Worker ${process.pid} forced to exit after shutdown timeout.`
+      );
+      process.exit(1);
+    }, 10000);
+  };
+
+  process.on('SIGINT', gracefulShutdown);
+  process.on('SIGTERM', gracefulShutdown);
 }
