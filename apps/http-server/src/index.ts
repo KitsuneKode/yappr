@@ -1,4 +1,4 @@
-import { JWT_SECRET, PORT } from '@repo/backend-common/config';
+import {  PORT } from '@repo/backend-common/config';
 import cluster from 'cluster';
 import os from 'os';
 import app from './app';

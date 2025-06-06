@@ -1,6 +1,6 @@
 {
-  "name": "ws-server",
-  "module": "./src/index.ts",
+  "name": "webrtc-server",
+  "module": "index.ts",
   "type": "module",
   "private": true,
   "scripts": {
@@ -11,16 +11,13 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@repo/typescript-config": "workspace:*",
-    "@types/jsonwebtoken": "^9.0.9",
-    "@types/ws": "^8.18.0"
+    "@types/express": "^5.0.2"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@repo/backend-common": "workspace:*",
-    "jsonwebtoken": "^9.0.2",
-    "ws": "^8.18.1"
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
   }
 }

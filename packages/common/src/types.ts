@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const passwordSchema = z
   .string()
@@ -7,10 +7,7 @@ export const passwordSchema = z
   .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
   .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
   .regex(/[0-9]/, 'Password must contain at least one number')
-  .regex(
-    /[^a-zA-Z0-9]/,
-    'Password must contain at least one special character'
-  );
+  .regex(/[^a-zA-Z0-9]/, 'Password must contain at least one special character')
 
 export const signUpObject = z.object({
   username: z
@@ -21,9 +18,33 @@ export const signUpObject = z.object({
     .regex(/^[a-zA-Z0-9]+$/),
   email: z.string().email().toLowerCase().trim(),
   password: passwordSchema,
-});
+})
 
 export const signInObject = z.object({
   email: z.string().email().toLowerCase().trim(),
   password: passwordSchema,
-});
+})
+
+//SOCKET IO TYPES
+export interface ServerToClientEvents {
+  'user-joined': (data: { email: string; socketId: string }) => void
+
+  'join-room': (data: { email: string; roomId: string }) => void
+  noArg: () => void
+  basicEmit: (a: number, b: string, c: Buffer) => void
+  withAck: (d: string, callback: (e: number) => void) => void
+}
+
+export interface ClientToServerEvents {
+  hello: () => void
+  'join-room': (data: { email: string; roomId: string }) => void
+}
+
+export interface InterServerEvents {
+  ping: () => void
+}
+
+export interface SocketData {
+  name: string
+  age: number
+}

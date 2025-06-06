@@ -16,6 +16,7 @@ The project is organized into the following packages:
 - `packages/db`: A database layer using Prisma.
 - `packages/common`: A shared common package between web and backend.
 - `packages/backend-common`: A shared backend common package.
+- `packages/ui`: A shared UI package.
 
 
 ## Getting Started
