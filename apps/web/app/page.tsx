@@ -27,14 +27,14 @@ const ThemeImage = (props: Props) => {
 export default function Home() {
   const [roomId, setRoomId] = useState<string>('')
   const [email, setEmail] = useState<string>('')
-  const webSocket = useSocket()
+  const { socket: webSocket } = useSocket()
   const router = useRouter()
 
   const handleJoinRoom = useCallback(
     (data: { email: string; roomId: string }) => {
       console.log('Join-room', data.email)
 
-      router.push(`/chat/${data.roomId}`)
+      router.push(`/chat/${data.roomId}?email=${data.email}`)
     },
     [router],
   )
@@ -100,6 +100,15 @@ export default function Home() {
             Button
           </Button>
         </form>
+        <div className="flex h-screen w-screen items-center justify-center gap-x-5">
+          <p className="animate-bounce text-4xl delay-500 duration-500">::</p>
+          <p className="animate-bounce text-4xl delay-100 duration-500">::</p>
+          <p className="animate-bounce text-4xl delay-500 duration-500">::</p>
+          <p className="animate-bounce text-4xl delay-100 duration-500">::</p>
+          <p className="animate-bounce text-4xl delay-500 duration-500">::</p>
+          <p className="animate-bounce text-4xl delay-100 duration-500">::</p>
+          <p className="animate-bounce text-4xl delay-500 duration-500">::</p>
+        </div>
       </div>
     </div>
   )

@@ -24,27 +24,3 @@ export const signInObject = z.object({
   email: z.string().email().toLowerCase().trim(),
   password: passwordSchema,
 })
-
-//SOCKET IO TYPES
-export interface ServerToClientEvents {
-  'user-joined': (data: { email: string; socketId: string }) => void
-
-  'join-room': (data: { email: string; roomId: string }) => void
-  noArg: () => void
-  basicEmit: (a: number, b: string, c: Buffer) => void
-  withAck: (d: string, callback: (e: number) => void) => void
-}
-
-export interface ClientToServerEvents {
-  hello: () => void
-  'join-room': (data: { email: string; roomId: string }) => void
-}
-
-export interface InterServerEvents {
-  ping: () => void
-}
-
-export interface SocketData {
-  name: string
-  age: number
-}

@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@repo/common": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/bun": "latest"
   },

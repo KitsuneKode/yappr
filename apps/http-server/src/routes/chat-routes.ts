@@ -1,37 +1,32 @@
-import {
-  Router,
-  type NextFunction,
-  type Request,
-  type Response,
-} from 'express';
-import { auth } from '../middleware/auth-middleware';
-import { prisma } from '@repo/db';
-import { randomUUIDv7 as uuidv7 } from 'bun';
+import { Router, type NextFunction, type Request, type Response } from 'express'
+import { auth } from '@/middleware/auth-middleware'
+import { prisma } from '@repo/db'
+import { randomUUIDv7 as uuidv7 } from 'bun'
 
-const router = Router();
+const router = Router()
 
 router.post(
   '/room',
   auth,
   async (req: Request, res: Response, next: NextFunction) => {
-    const { name, avatar } = req.body;
-    const userId = req.userId;
+    const { name, avatar } = req.body
+    const userId = req.userId
     try {
-      let avatarUrl: string = avatar;
+      let avatarUrl: string = avatar
       if (!avatar) {
-        avatarUrl = 'default image';
+        avatarUrl = 'default image'
       }
 
       if (!name) {
         res.status(400).json({
           message: 'Room name and avatar are required',
-        });
-        return;
+        })
+        return
       }
 
-      const slug = uuidv7().replace(/-/g, '');
+      const slug = uuidv7().replace(/-/g, '')
 
-      console.log(slug, 'slug');
+      console.log(slug, 'slug')
 
       const room = await prisma.room.create({
         data: {
@@ -40,33 +35,33 @@ router.post(
           avatar: avatarUrl,
           adminId: Number(userId),
         },
-      });
+      })
 
       if (!room) {
         res.status(404).json({
           message: 'Failed to create room',
-        });
-        return;
+        })
+        return
       }
 
       res.status(200).json({
         message: 'Room created successfully',
         slug,
-      });
+      })
     } catch (err) {
-      next(err);
+      next(err)
     }
-  }
-);
+  },
+)
 
 router.delete(
   '/room/:slug',
   auth,
   async (req: Request, res: Response, next: NextFunction) => {
-    const slug = req.params.slug;
-    const adminId = parseInt(req.userId!);
+    const slug = req.params.slug
+    const adminId = parseInt(req.userId!)
 
-    console.log(slug, 'slug');
+    console.log(slug, 'slug')
 
     try {
       const room = await prisma.room.delete({
@@ -74,23 +69,23 @@ router.delete(
           slug,
           adminId,
         },
-      });
+      })
 
       if (!room) {
         res.status(404).json({
           message: 'Failed to delete room',
-        });
-        return;
+        })
+        return
       }
 
       res.status(200).json({
         message: 'Room deleted successfully',
-      });
+      })
     } catch (err) {
-      next(err);
+      next(err)
     }
-  }
-);
+  },
+)
 
 router.get(
   '/room',
@@ -103,22 +98,22 @@ router.get(
           slug: true,
           avatar: true,
         },
-      });
+      })
 
       if (!availableRooms) {
         res.status(404).json({
           message: 'No rooms found',
-        });
-        return;
+        })
+        return
       }
 
       res.status(200).json({
         rooms: availableRooms,
-      });
+      })
     } catch (err) {
-      next(err);
+      next(err)
     }
-  }
-);
+  },
+)
 
-export default router;
+export default router

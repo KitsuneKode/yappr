@@ -1,20 +1,19 @@
 import { io, type Socket } from 'socket.io-client'
-import { createContext, useContext, useMemo } from 'react'
-import { ClientToServerEvents, ServerToClientEvents } from '@repo/common/types'
+import { createContext, useContext, useEffect, useMemo } from 'react'
+import { ClientToServerEvents, ServerToClientEvents } from '@/utils/types'
 
-// Create a properly typed socket context
-const WebSocketContext = createContext<Socket<
-  ServerToClientEvents,
-  ClientToServerEvents
-> | null>(null)
+type SocketContextType = {
+  socket: Socket<ServerToClientEvents, ClientToServerEvents>
+}
+const WebSocketContext = createContext<SocketContextType | null>(null)
 
 export const WebSocketProvider = ({
   children,
 }: {
   children: React.ReactNode
 }) => {
-  const socket = useMemo(() => {
-    const wsUrl = process.env.NEXT_PUBLIC_WS_SERVER_URL || 'localhost:8081'
+  const socket: SocketContextType['socket'] = useMemo(() => {
+    const wsUrl = process.env.NEXT_PUBLIC_WS_SERVER_URL
     return io(wsUrl)
   }, [])
 
@@ -40,9 +39,15 @@ export const WebSocketProvider = ({
   //     socket.close()
   //   }
   // }, [])
+  //
+  useEffect(() => {
+    return () => {
+      socket.close()
+    }
+  }, [])
 
   return (
-    <WebSocketContext.Provider value={socket}>
+    <WebSocketContext.Provider value={{ socket }}>
       {children}
     </WebSocketContext.Provider>
   )

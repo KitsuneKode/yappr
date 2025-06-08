@@ -1,11 +1,11 @@
 {
   "name": "http-server",
-  "module": "./src/index.ts",
+  "module": "./src/server.ts",
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "bun ./src/index.ts",
-    "dev": "bun --watch run ./src/index.ts",
+    "start": "bun ./src/server.ts",
+    "dev": "bun --watch run ./src/server.ts",
     "clean": "rm -rf ./dist"
   },
   "devDependencies": {

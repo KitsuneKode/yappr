@@ -1,8 +1,16 @@
 'use client'
 
-import * as React from 'react'
+import React from 'react'
+import dynamic from 'next/dynamic'
 import { WebSocketProvider } from '@/contexts/socket-context'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
+
+const PeerProvider = dynamic(
+  () => import('@/contexts/peer-context').then((mod) => mod.PeerProvider),
+  {
+    ssr: false,
+  },
+)
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,7 +21,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
       enableColorScheme
     >
-      <WebSocketProvider>{children}</WebSocketProvider>
+      <WebSocketProvider>
+        <PeerProvider>{children}</PeerProvider>
+      </WebSocketProvider>
     </NextThemesProvider>
   )
 }
