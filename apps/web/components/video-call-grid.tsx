@@ -22,11 +22,11 @@ const VideoCallGrid = ({ participants }: Props) => {
   const handleEnlarge = (id: string) => setEnlargedUserId(id)
   const handleShrink = () => setEnlargedUserId(null)
 
-  const [initialWindowHeight, setInitialWindowHeight] = useState<number | null>(
-    null,
+  const [initialWindowHeight, setInitialWindowHeight] = useState<number>(
+    window.innerHeight,
   )
-  const [initialWindowWidth, setInitialWindowWidth] = useState<number | null>(
-    null,
+  const [initialWindowWidth, setInitialWindowWidth] = useState<number>(
+    window.innerWidth,
   )
   const visibleUsers = participants.slice(0, MAX_VISIBLE_VIDEOS)
   const hiddenCount = participants.length - MAX_VISIBLE_VIDEOS
@@ -44,7 +44,7 @@ const VideoCallGrid = ({ participants }: Props) => {
   return (
     <>
       {visibleUsers
-        .sort((a, b) => (a.isSelf ? -1 : -1))
+        .sort((a, b) => (a.isSelf ? -1 : 1))
         .map((user, idx) =>
           createPortal(
             <VideoTile

@@ -1,20 +1,15 @@
 'use client'
 import dynamic from 'next/dynamic'
-import ReactPlayer from 'react-player'
 import { cn } from '@repo/ui/lib/utils'
-import { Socket } from 'socket.io-client'
 import { usePeer } from '@/contexts/peer-context'
 import { Button } from '@repo/ui/components/button'
 import { useSocket } from '@/contexts/socket-context'
-import { GroupVideoGrid } from '@/components/group-video-call-grid'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useParams, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   CallAcceptedData,
-  ClientToServerEvents,
   IceCandidateData,
   IncomingCallData,
-  ServerToClientEvents,
   UserData,
 } from '@/utils/types'
 

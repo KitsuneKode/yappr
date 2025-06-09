@@ -32,6 +32,7 @@ export const PeerProvider = ({ children }: { children: React.ReactNode }) => {
   const addedTracks = useRef<RTCRtpSender[]>([])
 
   const { socket: webSocket } = useSocket()
+  const iceBuffer = useRef<RTCIceCandidate[]>([])
 
   const updateRemoteEmail = useCallback(
     (newEmail: string | null) => {
@@ -51,15 +52,17 @@ export const PeerProvider = ({ children }: { children: React.ReactNode }) => {
               'stun:stun.l.google.com:19302',
               'stun:stun1.l.google.com:19302',
               'stun:global.stun.twilio.com:3478',
-              'stun:stun.stunprotocol.org:3478',
+              // 'stun:stun.stunprotocol.org:3478',
             ],
           },
-          // {
-          //   urls: 'turn:openrelay.metered.ca:80',
-          //   credential: 'openrelayproject',
-          //   username: 'openrelayproject',
-          // },
+          {
+            urls: 'turn:openrelay.metered.ca:80',
+            credential: 'openrelayproject',
+            username: 'openrelayproject',
+          },
         ],
+        //@ts-expect-error
+        sdpSemantics: 'unified-plan',
       }),
     [],
   )
@@ -73,46 +76,50 @@ export const PeerProvider = ({ children }: { children: React.ReactNode }) => {
       const currentRemoteEmail = remoteEmailRef.current
       console.log('Current remote email:', currentRemoteEmail)
 
-      if (event.candidate && currentRemoteEmail && webSocket) {
-        try {
-          webSocket.emit('ice-candidate', {
-            email: currentRemoteEmail,
-            iceCandidate: event.candidate,
-          })
-        } catch (error) {
-          console.error('Failed to send ICE candidate:', error)
+      try {
+        if (event.candidate) {
+          if (currentRemoteEmail) {
+            webSocket.emit('ice-candidate', {
+              email: currentRemoteEmail,
+              iceCandidate: event.candidate,
+            })
+          } else {
+            iceBuffer.current.push(event.candidate)
+          }
         }
+      } catch (error) {
+        console.error('Failed to send ICE candidate:', error)
       }
     },
     [peer, webSocket],
   )
 
-  // const handleNegotiation = useCallback(async () => {
-  //   console.log('Negotiation needed')
-  //   const currentRemoteEmail = remoteEmailRef.current
+  const handleNegotiation = useCallback(async () => {
+    console.log('Negotiation needed')
+    const currentRemoteEmail = remoteEmailRef.current
 
-  //   if (!currentRemoteEmail) {
-  //     console.error('No remote email available for negotiation')
-  //     return
-  //   }
+    if (!currentRemoteEmail) {
+      console.error('No remote email available for negotiation')
+      return
+    }
 
-  //   if (!webSocket) {
-  //     console.error('No websocket connection available')
-  //     return
-  //   }
+    if (!webSocket) {
+      console.error('No websocket connection available')
+      return
+    }
 
-  //   try {
-  //     const offer = await createOffer()
-  //     console.log('Negotiation needed, creating offer', offer)
+    try {
+      const offer = await createOffer()
+      console.log('Negotiation needed, creating offer', offer)
 
-  //     webSocket.emit('negotiation-needed', {
-  //       email: currentRemoteEmail,
-  //       offer,
-  //     })
-  //   } catch (error) {
-  //     console.error('Failed to handle negotiation:', error)
-  //   }
-  // }, [webSocket]) // Remove peer and createOffer from deps to avoid circular dependency
+      webSocket.emit('call-user', {
+        email: currentRemoteEmail,
+        offer,
+      })
+    } catch (error) {
+      console.error('Failed to handle negotiation:', error)
+    }
+  }, [webSocket]) // Remove peer and createOffer from deps to avoid circular dependency
 
   const createOffer = useCallback(async () => {
     const offer = await peer.createOffer()
@@ -133,7 +140,9 @@ export const PeerProvider = ({ children }: { children: React.ReactNode }) => {
   const setAnswer = useCallback(
     async (answer: RTCSessionDescriptionInit) => {
       console.log('Setting remote description', answer)
-      await peer.setRemoteDescription(answer)
+      if (peer.signalingState === 'have-local-offer') {
+        await peer.setRemoteDescription(answer)
+      }
     },
     [peer],
   )
@@ -170,18 +179,57 @@ export const PeerProvider = ({ children }: { children: React.ReactNode }) => {
     setRemoteStream(remoteStream)
   }, [])
 
+  // const handleNegotiation = useCallback(async () => {
+  //   console.log('Negotiation needed')
+  //   const currentRemoteEmail = remoteEmailRef.current
+
+  //   if (!currentRemoteEmail) {
+  //     console.error('No remote email available for negotiation')
+  //     return
+  //   }
+
+  //   if (!webSocket) {
+  //     console.error('No websocket connection available')
+  //     return
+  //   }
+
+  //   try {
+  //     const offer = await createOffer()
+  //     console.log('Negotiation needed, creating offer', offer)
+
+  //     webSocket.emit('negotiation-needed', {
+  //       email: currentRemoteEmail,
+  //       offer,
+  //     })
+  //   } catch (error) {
+  //     console.error('Failed to handle negotiation:', error)
+  //   }
+  // }, [webSocket]) // Remove peer and createOffer from deps to avoid circular dependency
+
   // Update ref whenever remoteEmail changes
   useEffect(() => {
     remoteEmailRef.current = remoteEmail
+
+    if (remoteEmail && iceBuffer.current.length > 0) {
+      iceBuffer.current.forEach((cand) => {
+        webSocket.emit('ice-candidate', {
+          email: remoteEmail,
+          iceCandidate: cand,
+        })
+      })
+      iceBuffer.current.length = 0
+    }
   }, [remoteEmail])
 
   useEffect(() => {
     peer.addEventListener('track', handleTrackEvent)
     peer.addEventListener('icecandidate', handleIceCandidate)
+    // peer.addEventListener('negotiationneeded', handleNegotiation)
 
     return () => {
       peer.removeEventListener('track', handleTrackEvent)
       peer.removeEventListener('icecandidate', handleIceCandidate)
+      // peer.removeEventListener('negotiationneeded', handleNegotiation)
     }
   }, [peer, handleTrackEvent, handleIceCandidate])
 

@@ -1,8 +1,10 @@
 import { Server } from 'socket.io'
 import express from 'express'
+import { createServer } from 'http'
 
 const app = express()
-const io = new Server({
+const server = createServer(app)
+const io = new Server(server, {
   cors: {
     origin: '*',
   },
@@ -12,6 +14,10 @@ app.use(express.json())
 
 const emailToSocketIdMapping = new Map()
 const socketIdToEmailMapping = new Map()
+
+const peer = io.of('/peer')
+const chat = io.of('/chat')
+const multiPeer = io.of('/group-video')
 
 io.on('connection', (socket) => {
   console.log('New Connection', socket.id)
@@ -79,7 +85,7 @@ io.on('connection', (socket) => {
   //   const { email, offer } = data
   //   const socketId = emailToSocketIdMapping.get(email)
   //   const fromEmail = socketIdToEmailMapping.get(socket.id)
-
+  //
   //   if (!socketId) {
   //     console.error(
   //       'Failed to negotiate with user:',
@@ -88,9 +94,9 @@ io.on('connection', (socket) => {
   //     )
   //     return
   //   }
-
+  //
   //   console.log('Negotiation needed from', fromEmail, 'to', email)
-
+  //
   //   try {
   //     // ✅ FIXED: Emit correct event name
   //     io.to(socketId).emit('negotiation-needed', { fromEmail, offer })
@@ -98,12 +104,12 @@ io.on('connection', (socket) => {
   //     console.error('Failed to send negotiation:', error)
   //   }
   // })
-
+  //
   // socket.on('negotiation-needed:answer', (data) => {
   //   const { email, answer } = data
   //   const socketId = emailToSocketIdMapping.get(email)
   //   const fromEmail = socketIdToEmailMapping.get(socket.id)
-
+  //
   //   if (!socketId) {
   //     console.error(
   //       'Failed to send negotiation answer:',
@@ -112,9 +118,9 @@ io.on('connection', (socket) => {
   //     )
   //     return
   //   }
-
+  //
   //   console.log('Negotiation answer from', fromEmail, 'to', email)
-
+  //
   //   try {
   //     io.to(socketId).emit('negotiation-needed:answer', {
   //       email: fromEmail,
@@ -162,8 +168,6 @@ io.on('connection', (socket) => {
   })
 })
 
-app.listen(8082, () => {
+server.listen(8082, () => {
   console.log('HTTP Server is running on port 8082')
 })
-
-io.listen(8081)
