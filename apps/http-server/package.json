@@ -9,7 +9,7 @@
     "clean": "rm -rf ./dist"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
+    "@yappr/typescript-config": "workspace:*",
     "@types/bcrypt": "^5.0.2",
     "@types/bun": "^1.2.8",
     "@types/cookie-parser": "^1.4.8",
@@ -21,9 +21,9 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@repo/backend-common": "workspace:*",
-    "@repo/common": "workspace:*",
-    "@repo/db": "workspace:*",
+    "@yappr/backend-common": "workspace:*",
+    "@yappr/common": "workspace:*",
+    "@yappr/db": "workspace:*",
     "bcrypt": "^5.1.1",
     "cluster": "^0.7.7",
     "cookie-parser": "^1.4.7",

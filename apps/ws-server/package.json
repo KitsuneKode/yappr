@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@repo/typescript-config": "workspace:*",
+    "@yappr/typescript-config": "workspace:*",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/ws": "^8.18.0"
   },
@@ -19,7 +19,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@repo/backend-common": "workspace:*",
+    "@yappr/backend-common": "workspace:*",
     "jsonwebtoken": "^9.0.2",
     "ws": "^8.18.1"
   }

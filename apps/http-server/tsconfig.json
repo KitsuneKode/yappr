@@ -1,5 +1,5 @@
 {
-  "extends": "@repo/typescript-config/backend.json",
+  "extends": "@yappr/typescript-config/backend.json",
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]

@@ -1,5 +1,5 @@
 {
-  "name": "@repo/db",
+  "name": "@yappr/db",
   "version": "1.0.0",
   "description": "",
   "main": "./src/index.ts",
@@ -19,7 +19,7 @@
     "prisma": "^6.5.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
+    "@yappr/typescript-config": "workspace:*",
     "@types/bun": "latest"
   },
   "peerDependencies": {

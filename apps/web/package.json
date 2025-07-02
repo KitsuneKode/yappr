@@ -12,9 +12,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/common": "workspace:*",
-    "@repo/db": "workspace:*",
-    "@repo/ui": "workspace:*",
+    "@yappr/common": "workspace:*",
+    "@yappr/db": "workspace:*",
+    "@yappr/ui": "workspace:*",
     "framer-motion": "^12.16.0",
     "lucide-react": "^0.501.0",
     "next": "^15.3.3",
@@ -24,8 +24,8 @@
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@yappr/eslint-config": "workspace:*",
+    "@yappr/typescript-config": "workspace:*",
     "@types/node": "^22.15.29",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
