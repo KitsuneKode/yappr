@@ -1,10 +1,10 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Input } from '@repo/ui/components/input'
-import { Label } from '@repo/ui/components/label'
+import { Input } from '@yappr/ui/components/input'
+import { Label } from '@yappr/ui/components/label'
 import Image, { type ImageProps } from 'next/image'
-import { Button } from '@repo/ui/components/button'
+import { Button } from '@yappr/ui/components/button'
 import { useSocket } from '@/contexts/socket-context'
 import { useCallback, useEffect, useState } from 'react'
 
@@ -80,7 +80,7 @@ export default function Home() {
           <Input
             id="email"
             value={email}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               e.preventDefault()
 
               handleChange(e, 'email')
@@ -90,7 +90,7 @@ export default function Home() {
           <Input
             id="room-id"
             value={roomId}
-            onChange={(e) => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               e.preventDefault()
 
               handleChange(e, 'room-id')

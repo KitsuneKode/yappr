@@ -1,6 +1,6 @@
 'use client'
 import { motion } from 'framer-motion'
-import { cn } from '@repo/ui/lib/utils'
+import { cn } from '@yappr/ui/lib/utils'
 import { Maximize2, Minimize2 } from 'lucide-react'
 
 type Props = {
@@ -35,7 +35,7 @@ export const VideoTile = ({
   const height = isEnlarged ? 400 : BASE_HEIGHT
   const width = isEnlarged ? 600 : BASE_WIDTH
 
-  //    Tile's initial position
+  //tile's initial position
   //    - y0: distance from top
   //    - x0: distance from left
   const y0 = index * (BASE_HEIGHT + TILE_MARGIN) + TOP_OFFSET

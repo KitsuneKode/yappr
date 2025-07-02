@@ -1,4 +1,4 @@
-# @repo/common
+# @yappr/common
 
 To install dependencies:
 

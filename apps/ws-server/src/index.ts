@@ -1,4 +1,4 @@
-import { PORT } from '@repo/backend-common/config';
+import { PORT } from '@yappr/backend-common/config';
 import { URLSearchParams } from 'url';
 import { WebSocket, WebSocketServer } from 'ws';
 import { checkAuthentication } from './lib';

@@ -1,10 +1,10 @@
-import { config } from '@repo/backend-common/config'
-import { prisma } from '@repo/db'
+import { config } from '@yappr/backend-common/config'
+import { prisma } from '@yappr/db'
 import bcrypt from 'bcrypt'
 import { Router, type Request, type Response, type NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
-import { getValidationErrors, validate } from '@repo/common'
-import { signInObject } from '@repo/common/types'
+import { getValidationErrors, validate } from '@yappr/common'
+import { signInObject } from '@yappr/common/types'
 
 const router = Router()
 

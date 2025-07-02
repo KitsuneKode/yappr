@@ -1,6 +1,6 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import type { NextFunction, Request, Response } from 'express';
-import { JWT_SECRET } from '@repo/backend-common/config';
+import { JWT_SECRET } from '@yappr/backend-common/config';
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
   if (req.originalUrl === '/api/auth') {

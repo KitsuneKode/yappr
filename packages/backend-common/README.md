@@ -1,4 +1,4 @@
-# @repo/backend-common
+# @yappr/backend-common
 
 To install dependencies:
 

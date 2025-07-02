@@ -1,4 +1,4 @@
-# @repo/db
+# @yappr/db
 
 To install dependencies:
 

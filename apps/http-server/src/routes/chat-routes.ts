@@ -1,6 +1,6 @@
 import { Router, type NextFunction, type Request, type Response } from 'express'
 import { auth } from '@/middleware/auth-middleware'
-import { prisma } from '@repo/db'
+import { prisma } from '@yappr/db'
 import { randomUUIDv7 as uuidv7 } from 'bun'
 
 const router = Router()

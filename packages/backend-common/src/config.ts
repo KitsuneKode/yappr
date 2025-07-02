@@ -1,4 +1,4 @@
-import { ConfigLoader } from '@repo/common/config-loader'
+import { ConfigLoader } from '@yappr/common/config-loader'
 
 const backendConfigSchema = {
   jwtSecret: () => process.env.JWT_SECRET || '',

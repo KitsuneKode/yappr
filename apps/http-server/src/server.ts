@@ -1,8 +1,8 @@
-import { config } from '@repo/backend-common/config'
+import { config } from '@yappr/backend-common/config'
 import cluster from 'cluster'
 import os from 'os'
 import app from '@/app'
-import logger from '@repo/common/logger'
+import logger from '@yappr/common/logger'
 
 const numCPUs = os.cpus().length
 

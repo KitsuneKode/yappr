@@ -1,5 +1,5 @@
 'use client'
-import { cn } from '@repo/ui/lib/utils'
+import { cn } from '@yappr/ui/lib/utils'
 import React, { useEffect, useRef, useState } from 'react'
 import { Mic, MicOff, Video, VideoOff, Eye, EyeOff } from 'lucide-react'
 

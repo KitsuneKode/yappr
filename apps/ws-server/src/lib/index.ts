@@ -1,4 +1,4 @@
-import { JWT_SECRET } from '@repo/backend-common/config';
+import { JWT_SECRET } from '@yappr/backend-common/config';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 
 export const checkAuthentication = (token: string): string | null => {
