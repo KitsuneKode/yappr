@@ -4,6 +4,8 @@ import { createPortal } from 'react-dom'
 import React, { useState, useEffect } from 'react'
 import { VideoTile } from '@/components/draggable-video-player'
 
+import useWindowSize from '@/hooks/useWindowSize'
+
 const MAX_VISIBLE_VIDEOS = 4
 
 type User = {
@@ -19,27 +21,20 @@ type Props = {
 const VideoCallGrid = ({ participants }: Props) => {
   const [enlargedUserId, setEnlargedUserId] = useState<string | null>(null)
   const [mounted, setMounted] = useState(false)
-  const handleEnlarge = (id: string) => setEnlargedUserId(id)
-  const handleShrink = () => setEnlargedUserId(null)
 
-  const [initialWindowHeight, setInitialWindowHeight] = useState<number>(
-    window.innerHeight,
-  )
-  const [initialWindowWidth, setInitialWindowWidth] = useState<number>(
-    window.innerWidth,
-  )
+  const { width, height } = useWindowSize()
+
   const visibleUsers = participants.slice(0, MAX_VISIBLE_VIDEOS)
   const hiddenCount = participants.length - MAX_VISIBLE_VIDEOS
 
+  const handleEnlarge = (id: string) => setEnlargedUserId(id)
+  const handleShrink = () => setEnlargedUserId(null)
+
   useEffect(() => {
     setMounted(true)
-    setInitialWindowHeight(window.innerHeight)
-    setInitialWindowWidth(window.innerWidth)
   }, [])
 
-  if (!mounted) {
-    return null
-  }
+  if (!mounted) return null
 
   return (
     <>
@@ -51,8 +46,8 @@ const VideoCallGrid = ({ participants }: Props) => {
               key={user.id}
               user={user}
               index={idx}
-              windowHeight={initialWindowHeight}
-              windowWidth={initialWindowWidth}
+              windowHeight={height}
+              windowWidth={width}
               isEnlarged={user.id === enlargedUserId}
               onEnlarge={() => handleEnlarge(user.id)}
               onShrink={handleShrink}
